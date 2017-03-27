@@ -28,102 +28,6 @@ y5: .quad 2937
 
 
 .macro drns rns_num
-# saving registers values to stack
-push %r11
-push %r12
-push %r13
-push %r14
-push %r15
-push %r8
-push %rbx
-
-mov \rns_num, %rax
-shr $29, %rax									#-----------------------------XXX
-and $7, %rax									#00000000000000000000000000000111 (:3)
-mov %rax, %r11								#mod 7
-
-mov \rns_num, %rax
-shr $25, %rax		  						#-------------------------000XXXX
-and $15, %rax		  						#00000000000000000000000000001111 (:4)
-mov %rax, %r12								#mod 15
-
-mov \rns_num, %rax
-shr $20, %rax									#--------------------0000000XXXXX
-and $31, %rax		  						#00000000000000000000000000011111 (:5)
-mov %rax, %r13								#mod 31
-
-mov \rns_num, %rax
-shr $13, %rax									#-------------000000000000XXXXXXX
-and $127, %rax								#00000000000000000000000001111111 (:7)
-mov %rax, %r14								#mod 127
-
-mov \rns_num, %rax
-															#0000000000000000000XXXXXXXXXXXXX
-and $8191, %rax								#00000000000000000001111111111111 (:13)
-mov %rax,%r15									#mod 8192
-
-# r11 <- X mod 7     - a1
-# r12 <- X mod 15    - a2
-# r13 <- X mod 31    - a3
-# r14 <- X mod 127   - a4
-# r15 <- X mod 8192  - a5
-
-# CRT
-# r8 - suma
-
-## a1 * M1 x y1
-mov M1, %rax
-mul %r11
-mov y1, %rbx
-mul %rbx
-mov %rax, %r8
-
-## a2 * M2 x y2  + do r8
-mov M2, %rax
-mul %r12
-mov y2, %rbx
-mul %rbx
-add %rax, %r8
-
-## a3 * M3 x y3  + do r8
-mov M3, %rax
-mul %r13
-mov y3, %rbx
-mul %rbx
-add %rax, %r8
-
-## a4 * M4 x y4  + do r8
-mov M4, %rax
-mul %r14
-mov y4, %rbx
-mul %rbx
-add %rax, %r8
-
-## a5 * M5 x y5  + do r8
-mov M5, %rax
-mul %r15
-mov y5, %rbx
-mul %rbx
-add %rax, %r8
-
-## suma mod M
-mov M, %rbx
-mov $0, %rdx
-mov %r8, %rax
-div %rbx
-mov %rdx, %rax
-
-# geting back registers values from stack
-pop %rbx
-pop %r8
-pop %r15
-pop %r14
-pop %r13
-pop %r12
-pop %r11
-.endm
-
-.macro mulrns value
   # saving registers values to stack
   push %r11
   push %r12
@@ -133,8 +37,102 @@ pop %r11
   push %r8
   push %rbx
 
+  mov \rns_num, %rax
+  shr $29, %rax									#-----------------------------XXX
+  and $7, %rax									#00000000000000000000000000000111 (:3)
+  mov %rax, %r11								#mod 7
+
+  mov \rns_num, %rax
+  shr $25, %rax		  						#-------------------------000XXXX
+  and $15, %rax		  						#00000000000000000000000000001111 (:4)
+  mov %rax, %r12								#mod 15
+
+  mov \rns_num, %rax
+  shr $20, %rax									#--------------------0000000XXXXX
+  and $31, %rax		  						#00000000000000000000000000011111 (:5)
+  mov %rax, %r13								#mod 31
+
+  mov \rns_num, %rax
+  shr $13, %rax									#-------------000000000000XXXXXXX
+  and $127, %rax								#00000000000000000000000001111111 (:7)
+  mov %rax, %r14								#mod 127
+
+  mov \rns_num, %rax
+  															#0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax								#00000000000000000001111111111111 (:13)
+  mov %rax,%r15									#mod 8192
+
+  # r11 <- X mod 7     - a1
+  # r12 <- X mod 15    - a2
+  # r13 <- X mod 31    - a3
+  # r14 <- X mod 127   - a4
+  # r15 <- X mod 8192  - a5
+
+  # CRT
+  # r8 - suma
+
+  ## a1 * M1 x y1
+  mov M1, %rax
+  mul %r11
+  mov y1, %rbx
+  mul %rbx
+  mov %rax, %r8
+
+  ## a2 * M2 x y2  + do r8
+  mov M2, %rax
+  mul %r12
+  mov y2, %rbx
+  mul %rbx
+  add %rax, %r8
+
+  ## a3 * M3 x y3  + do r8
+  mov M3, %rax
+  mul %r13
+  mov y3, %rbx
+  mul %rbx
+  add %rax, %r8
+
+  ## a4 * M4 x y4  + do r8
+  mov M4, %rax
+  mul %r14
+  mov y4, %rbx
+  mul %rbx
+  add %rax, %r8
+
+  ## a5 * M5 x y5  + do r8
+  mov M5, %rax
+  mul %r15
+  mov y5, %rbx
+  mul %rbx
+  add %rax, %r8
+
+  ## suma mod M
+  mov M, %rbx
+  mov $0, %rdx
+  mov %r8, %rax
+  div %rbx
+  mov %rdx, %rax
+
   # geting back registers values from stack
-  pop %rbx                                                                   
+  pop %rbx
+  pop %r8
+  pop %r15
+  pop %r14
+  pop %r13
+  pop %r12
+  pop %r11
+.endm
+
+.macro mulrns rns_num
+  push %r11
+  push %r12
+  push %r13
+  push %r14
+  push %r15
+  push %r8
+  push %rbx
+
+  pop %rbx
   pop %r8
   pop %r15
   pop %r14
@@ -146,9 +144,9 @@ pop %r11
 .text
 .global main
 main:
-movq %rsp, %rbp #for correct debugging
-drns value
+  movq %rsp, %rbp #for correct debugging
+  drns value
 bb:
-movq $SYSEXIT, %rax
-movq $EXIT_SUCCESS, %rdi
-syscall
+  movq $SYSEXIT, %rax
+  movq $EXIT_SUCCESS, %rdi
+  syscall
