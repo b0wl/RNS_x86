@@ -1,3 +1,6 @@
+# Group 60
+# Issue 14 - x86 architecture software RNS extension 
+
 .data
 EXIT_SUCCESS=0
 SYSEXIT=60
