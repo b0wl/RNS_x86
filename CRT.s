@@ -2,7 +2,7 @@
 EXIT_SUCCESS=0
 SYSEXIT=60
 
-rns_num:
+value:
     .quad 0x8ce18240		      #123456	100 0110 01110 0001100 0001001000000
 
 m1: .quad  7									# 2^3  - 1 (dla względnego pierwszeństwa)
@@ -27,31 +27,37 @@ y4: .quad 54
 y5: .quad 2937
 
 
-.text
-.global main
-main:
+.macro drns rns_num
+# saving registers values to stack
+push %r11
+push %r12
+push %r13
+push %r14
+push %r15
+push %r8
+push %rbx
 
-mov rns_num, %rax
+mov \rns_num, %rax
 shr $29, %rax									#-----------------------------XXX
 and $7, %rax									#00000000000000000000000000000111 (:3)
 mov %rax, %r11								#mod 7
 
-mov rns_num, %rax
+mov \rns_num, %rax
 shr $25, %rax		  						#-------------------------000XXXX
 and $15, %rax		  						#00000000000000000000000000001111 (:4)
 mov %rax, %r12								#mod 15
 
-mov rns_num, %rax
+mov \rns_num, %rax
 shr $20, %rax									#--------------------0000000XXXXX
 and $31, %rax		  						#00000000000000000000000000011111 (:5)
 mov %rax, %r13								#mod 31
 
-mov rns_num, %rax
+mov \rns_num, %rax
 shr $13, %rax									#-------------000000000000XXXXXXX
 and $127, %rax								#00000000000000000000000001111111 (:7)
 mov %rax, %r14								#mod 127
 
-mov rns_num, %rax
+mov \rns_num, %rax
 															#0000000000000000000XXXXXXXXXXXXX
 and $8191, %rax								#00000000000000000001111111111111 (:13)
 mov %rax,%r15									#mod 8192
@@ -107,6 +113,21 @@ mov %r8, %rax
 div %rbx
 mov %rdx, %rax
 
+# geting back registers values from stack
+pop %rbx
+pop %r8
+pop %r15
+pop %r14
+pop %r13
+pop %r12
+pop %r11
+.endm
+
+.text
+.global main
+main:
+movq %rsp, %rbp #for correct debugging
+drns value
 bb:
 movq $SYSEXIT, %rax
 movq $EXIT_SUCCESS, %rdi
