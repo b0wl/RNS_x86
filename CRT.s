@@ -123,6 +123,26 @@ pop %r12
 pop %r11
 .endm
 
+.macro mulrns value
+  # saving registers values to stack
+  push %r11
+  push %r12
+  push %r13
+  push %r14
+  push %r15
+  push %r8
+  push %rbx
+
+  # geting back registers values from stack
+  pop %rbx                                                                   
+  pop %r8
+  pop %r15
+  pop %r14
+  pop %r13
+  pop %r12
+  pop %r11
+.endm
+
 .text
 .global main
 main:
