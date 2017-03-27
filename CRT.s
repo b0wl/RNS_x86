@@ -1,26 +1,26 @@
 # Group 60
-# Issue 14 - x86 architecture software RNS extension 
+# Issue 14 - x86 architecture software RNS extension
 
 .data
 EXIT_SUCCESS=0
 SYSEXIT=60
 
 value:
-    .quad 0x8ce18240		      #123456	100 0110 01110 0001100 0001001000000
+    .quad 0x8ce18240          #123456  100 0110 01110 0001100 0001001000000
 
-m1: .quad  7									# 2^3  - 1 (dla względnego pierwszeństwa)
-m2: .quad  15									# 2^4  - 1
-m3: .quad  31									# 2^5  - 1
-m4: .quad  127								# 2^7  - 1
-m5: .quad  8192								# 2^13 - 1
+m1: .quad  7                  # 2^3  - 1 (dla względnego pierwszeństwa)
+m2: .quad  15                 # 2^4  - 1
+m3: .quad  31                 # 2^5  - 1
+m4: .quad  127                # 2^7  - 1
+m5: .quad  8192               # 2^13 - 1
 
-M:	.quad 3386449920					# 7 * 15 * 31 * 127 * 8192
+M:  .quad 3386449920          # 7 * 15 * 31 * 127 * 8192
 
-M1: .quad 483778560						# 3386449920 / 7
-M2: .quad 225763328						# 3386449920 / 15
-M3: .quad 109240320						# 3386449920 / 31
-M4: .quad 26664960						# 3386449920 / 127
-M5: .quad 413385							# 3386449920 / 8192
+M1: .quad 483778560           # 3386449920 / 7
+M2: .quad 225763328           # 3386449920 / 15
+M3: .quad 109240320           # 3386449920 / 31
+M4: .quad 26664960            # 3386449920 / 127
+M5: .quad 413385              # 3386449920 / 8192
 
 # odwrotnosc multiplikatywna
 y1: .quad 6                   # notki w zeszycie ...
@@ -41,29 +41,29 @@ y5: .quad 2937
   push %rbx
 
   mov \rns_num, %rax
-  shr $29, %rax									#-----------------------------XXX
-  and $7, %rax									#00000000000000000000000000000111 (:3)
-  mov %rax, %r11								#mod 7
+  shr $29, %rax                  #-----------------------------XXX
+  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  mov %rax, %r11                 #mod 7
 
   mov \rns_num, %rax
-  shr $25, %rax		  						#-------------------------000XXXX
-  and $15, %rax		  						#00000000000000000000000000001111 (:4)
-  mov %rax, %r12								#mod 15
+  shr $25, %rax                  #-------------------------000XXXX
+  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  mov %rax, %r12                 #mod 15
 
   mov \rns_num, %rax
-  shr $20, %rax									#--------------------0000000XXXXX
-  and $31, %rax		  						#00000000000000000000000000011111 (:5)
-  mov %rax, %r13								#mod 31
+  shr $20, %rax                  #--------------------0000000XXXXX
+  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  mov %rax, %r13                 #mod 31
 
   mov \rns_num, %rax
-  shr $13, %rax									#-------------000000000000XXXXXXX
-  and $127, %rax								#00000000000000000000000001111111 (:7)
-  mov %rax, %r14								#mod 127
+  shr $13, %rax                  #-------------000000000000XXXXXXX
+  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  mov %rax, %r14                 #mod 127
 
   mov \rns_num, %rax
-  															#0000000000000000000XXXXXXXXXXXXX
-  and $8191, %rax								#00000000000000000001111111111111 (:13)
-  mov %rax,%r15									#mod 8192
+                                 #0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  mov %rax,%r15                  #mod 8192
 
   # r11 <- X mod 7     - a1
   # r12 <- X mod 15    - a2
@@ -147,7 +147,6 @@ y5: .quad 2937
 .text
 .global main
 main:
-  movq %rsp, %rbp #for correct debugging
   drns value
 bb:
   movq $SYSEXIT, %rax
