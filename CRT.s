@@ -5,8 +5,10 @@
 EXIT_SUCCESS=0
 SYSEXIT=60
 
-value:
+value_rns:
     .quad 0x8ce18240          #123456  100 0110 01110 0001100 0001001000000
+value_pos:
+    .quad 123456
 
 m1: .quad  7                  # 2^3  - 1 (dla względnego pierwszeństwa)
 m2: .quad  15                 # 2^4  - 1
@@ -28,6 +30,54 @@ y2: .quad 2                   # Mi * yi = 1(mod m1)
 y3: .quad 7
 y4: .quad 54
 y5: .quad 2937
+
+.macro rns pos_num
+  push %rbx
+  push %rcx
+  push %rbx
+
+  mov $0, %rbx                # rbx - wynik
+
+  mov \pos_num, %rax
+  mov $0, %rdx
+  mov $7, %rcx
+  div %rcx
+  shl $29, %rdx
+  mov %rdx, %rbx
+
+  mov \pos_num, %rax
+  mov $0, %rdx
+  mov $15, %rcx
+  div %rcx
+  shl $25, %rdx
+  or  %rdx, %rbx
+
+  mov \pos_num, %rax
+  mov $0, %rdx
+  mov $31, %rcx
+  div %rcx
+  shl $20, %rdx
+  or  %rdx, %rbx
+
+  mov \pos_num, %rax
+  mov $0, %rdx
+  mov $127, %rcx
+  div %rcx
+  shl $13, %rdx
+  or  %rdx, %rbx
+
+  mov \pos_num, %rax
+  mov $0, %rdx
+  mov $8192, %rcx
+  div %rcx
+  or  %rdx, %rbx
+
+  mov %rbx, %rax
+
+  pop %rbx
+  pop %rcx
+  pop %rdx
+.endm
 
 
 .macro drns rns_num
@@ -147,8 +197,10 @@ y5: .quad 2937
 .text
 .global main
 main:
-  drns value
-bb:
+  drns value_rns
+drns_check:
+  rns  value_pos
+rns_check:
   movq $SYSEXIT, %rax
   movq $EXIT_SUCCESS, %rdi
   syscall
