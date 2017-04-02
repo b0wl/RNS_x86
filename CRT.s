@@ -177,29 +177,94 @@ y5: .quad 2937
 .endm
 
 .macro mulrns rns_num
-  push %r11
-  push %r12
-  push %r13
-  push %r14
-  push %r15
-  push %r8
   push %rbx
+  push %rcx
+  push %r9
+  
+  mov \rns_num, %rsi
+  mov %rax, %r9
+  mov %rsi, %rax
+  xor %rbx, %rbx
+  shr $29, %rax                  #-----------------------------XXX
+  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  mov %rax, %rcx
+  mov %r9, %rax
+  shr $29, %rax                  #-----------------------------XXX
+  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  mul %rcx
+  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  shl $29, %rax                  
+  or %rax, %rbx                  
 
+  mov %rsi, %rax
+  shr $25, %rax                  #-------------------------000XXXX
+  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  mov %rax, %rcx
+  mov %r9, %rax
+  shr $25, %rax                  #-------------------------000XXXX
+  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  mul %rcx
+  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  shl $25, %rax                  
+  or %rax, %rbx  
+
+  mov %rsi, %rax
+  shr $20, %rax                  #--------------------0000000XXXXX
+  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  mov %rax, %rcx
+  mov %r9, %rax
+  shr $20, %rax                  #--------------------0000000XXXXX
+  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  mul %rcx
+  and $31, %rax                  
+  shl $20, %rax                                  
+  or %rax, %rbx 
+
+  mov %rsi, %rax
+  shr $13, %rax                  #-------------000000000000XXXXXXX
+  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  mov %rax, %rcx
+  mov %r9, %rax
+  shr $13, %rax                  #-------------000000000000XXXXXXX
+  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  mul %rcx
+  and $127, %rax                 
+  shl $13, %rax                                  
+  or %rax, %rbx                 
+
+  mov %rsi, %rax
+                                 #0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  mov %rax, %rcx
+  mov %r9, %rax
+  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  mul %rcx
+  and $8191, %rax                #00000000000000000001111111111111 (:13)                               
+  or %rax, %rbx  
+  
+  mov %rbx, %rax
+
+  pop %rdx
+  pop %r9
   pop %rbx
-  pop %r8
-  pop %r15
-  pop %r14
-  pop %r13
-  pop %r12
-  pop %r11
 .endm
 
 .text
 .global main
 main:
+  movq %rsp, %rbp #for correct debugging
   drns value_rns
 drns_check:
-  rns  value_pos
+  rns value_pos
+  rns $2                         #  0x44204002 010 0010 00010 0000010 0000000000010
+  #rns $4                         #  0x88408004 100 0100 00100 0000100 0000000000100
+  
+mul_check:
+  mulrns %rax
+  mov %rax, %rsi
+  drns %rsi
+  
+  mov %rax, %rbx
 rns_check:
   movq $SYSEXIT, %rax
   movq $EXIT_SUCCESS, %rdi
