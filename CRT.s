@@ -250,7 +250,7 @@ y5: .quad 2937
   mov %r9, %rax
   and $8191, %rax                #00000000000000000001111111111111 (:13)
   mul %r10
-  mov $8191, %rbx 
+  mov $8192, %rbx
   mov $0, %rdx
   div %rbx                 
   or %rdx, %r11 
@@ -274,8 +274,7 @@ main:
   drns value_rns
 drns_check:
   rns value_pos
-  rns $64                         #  0x44204002 010 0010 00010 0000010 0000000000010
-  #rns $4                         #  0x88408004 100 0100 00100 0000100 0000000000100
+  rns $1024                         
   
 mul_check:
 
