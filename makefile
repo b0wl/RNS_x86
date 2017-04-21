@@ -12,6 +12,5 @@ debug:
 	gdb CRT.out
 
 children:
-	touch children
-	rm -v children
-	echo profit
+	touch childrem
+	rm children
