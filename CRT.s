@@ -6,11 +6,11 @@ EXIT_SUCCESS=0
 SYSEXIT=60
 
 value_rns:
-    .quad 0x8ce18240          #123456  100 0110 01110 0001100 0001001000000
+    .quad 0x8ce18240          # 123456  100 0110 01110 0001100 0001001000000
 value_pos:
     .quad 123456
 
-m1: .quad  7                  # 2^3  - 1 (dla względnego pierwszeństwa)
+m1: .quad  7                  # 2^3  - 1 (for relative primary)
 m2: .quad  15                 # 2^4  - 1
 m3: .quad  31                 # 2^5  - 1
 m4: .quad  127                # 2^7  - 1
@@ -24,13 +24,16 @@ M3: .quad 109240320           # 3386449920 / 31
 M4: .quad 26664960            # 3386449920 / 127
 M5: .quad 413385              # 3386449920 / 8192
 
-# odwrotnosc multiplikatywna
-y1: .quad 6                   # notki w zeszycie ...
+#  multiplicative inversion
+y1: .quad 6                   # calcs in notebook ...
 y2: .quad 2                   # Mi * yi = 1(mod m1)
 y3: .quad 7
 y4: .quad 54
 y5: .quad 2937
 
+
+#  Convert positional system number to RNS number
+#  RAX(rns) = ARG(pos)
 .macro rns pos_num
   push %rbx
   push %rcx
@@ -38,7 +41,7 @@ y5: .quad 2937
   push %r9
 
   mov \pos_num, %r9
-  xor %rbx, %rbx              # rbx - wynik
+  xor %rbx, %rbx              # rbx - result
 
   mov %r9, %rax
   mov $0, %rdx
@@ -82,6 +85,8 @@ y5: .quad 2937
   pop %rdx
 .endm
 
+#  Convert RNS number to positional system number
+#  RAX(pos) = ARG(rns)
 .macro drns rns_num
   # saving registers values to stack
   push %r11
@@ -94,11 +99,11 @@ y5: .quad 2937
   mov \rns_num, %r9
 
   mov %r9, %rax
-  shr $29, %rax                  #-----------------------------XXX
-  and $7, %rax                   #00000000000000000000000000000111 (:3)
-  mov %rax, %r11                 #mod 7
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
+  mov %rax, %r11                 # mod 7
 
-  ## a1 * M1 x y1
+  # a1 * M1 x y1
   mov M1, %rax
   mul %r11
   mov y1, %rbx
@@ -106,11 +111,11 @@ y5: .quad 2937
   mov %rax, %r8
 
   mov %r9, %rax
-  shr $25, %rax                  #-------------------------000XXXX
-  and $15, %rax                  #00000000000000000000000000001111 (:4)
-  mov %rax, %r11                 #mod 15
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
+  mov %rax, %r11                 # mod 15
 
-  ## a2 * M2 x y2  + do r8
+  # a2 * M2 x y2  + do r8
   mov M2, %rax
   mul %r11
   mov y2, %rbx
@@ -118,11 +123,11 @@ y5: .quad 2937
   add %rax, %r8
 
   mov %r9, %rax
-  shr $20, %rax                  #--------------------0000000XXXXX
-  and $31, %rax                  #00000000000000000000000000011111 (:5)
-  mov %rax, %r11                 #mod 31
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
+  mov %rax, %r11                 # mod 31
 
-  ## a3 * M3 x y3  + do r8
+  # a3 * M3 x y3  + do r8
   mov M3, %rax
   mul %r11
   mov y3, %rbx
@@ -130,11 +135,11 @@ y5: .quad 2937
   add %rax, %r8
 
   mov %r9, %rax
-  shr $13, %rax                  #-------------000000000000XXXXXXX
-  and $127, %rax                 #00000000000000000000000001111111 (:7)
-  mov %rax, %r11                 #mod 127
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
+  mov %rax, %r11                 # mod 127
 
-  ## a4 * M4 x y4  + do r8
+  # a4 * M4 x y4  + do r8
   mov M4, %rax
   mul %r11
   mov y4, %rbx
@@ -142,18 +147,18 @@ y5: .quad 2937
   add %rax, %r8
 
   mov %r9, %rax
-                                 #0000000000000000000XXXXXXXXXXXXX
-  and $8191, %rax                #00000000000000000001111111111111 (:13)
-  mov %rax, %r11                  #mod 8192
+                                 # 0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
+  mov %rax, %r11                 # mod 8192
 
-  ## a5 * M5 x y5  + do r8
+  # a5 * M5 x y5  + do r8
   mov M5, %rax
   mul %r11
   mov y5, %rbx
   mul %rbx
   add %rax, %r8
 
-  ## suma mod M
+  # suma mod M
   mov M, %rbx
   mov $0, %rdx
   mov %r8, %rax
@@ -169,6 +174,8 @@ y5: .quad 2937
   push %r11
 .endm
 
+#  Add two RNS numbers. One in RAX, other as ARG.
+#  RAX = RAX + ARG
 .macro addrns rns_num
   push %rbx
   push %rcx
@@ -182,12 +189,12 @@ y5: .quad 2937
   mov %rax, %r9
   mov %r12, %rax
   xor %r11, %r11
-  shr $29, %rax                  #-----------------------------XXX
-  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
   mov %rax, %r10
   mov %r9, %rax
-  shr $29, %rax                  #-----------------------------XXX
-  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
   add %r10, %rax
   mov $7, %rbx
   mov $0, %rdx
@@ -196,12 +203,12 @@ y5: .quad 2937
   or %rdx, %r11
 
   mov %r12, %rax
-  shr $25, %rax                  #-------------------------000XXXX
-  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
   mov %rax, %r10
   mov %r9, %rax
-  shr $25, %rax                  #-------------------------000XXXX
-  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
   add %r10, %rax
   mov $15, %rbx
   mov $0, %rdx
@@ -210,12 +217,12 @@ y5: .quad 2937
   or %rdx, %r11
 
   mov %r12, %rax
-  shr $20, %rax                  #--------------------0000000XXXXX
-  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
   mov %rax, %r10
   mov %r9, %rax
-  shr $20, %rax                  #--------------------0000000XXXXX
-  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
   add %r10, %rax
   mov $31, %rbx
   mov $0, %rdx
@@ -224,12 +231,12 @@ y5: .quad 2937
   or %rdx, %r11
 
   mov %r12, %rax
-  shr $13, %rax                  #-------------000000000000XXXXXXX
-  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
   mov %rax, %r10
   mov %r9, %rax
-  shr $13, %rax                  #-------------000000000000XXXXXXX
-  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
   add %r10, %rax
   mov $127, %rbx
   mov $0, %rdx
@@ -237,11 +244,11 @@ y5: .quad 2937
   shl $13, %rdx
   or %rdx, %r11
 
-  mov %r12, %rax                 #0000000000000000000XXXXXXXXXXXXX
-  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  mov %r12, %rax                 # 0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
   mov %rax, %r10
   mov %r9, %rax
-  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
   add %r10, %rax
   mov $8192, %rbx
   mov $0, %rdx
@@ -259,6 +266,8 @@ y5: .quad 2937
   pop %rbx
 .endm
 
+#  Multiple two RNS numbers. One in RAX, other as ARG.
+#  RAX = RAX * ARG
 .macro mulrns rns_num
   push %rbx
   push %rcx
@@ -272,12 +281,12 @@ y5: .quad 2937
   mov %rax, %r9
   mov %r12, %rax
   xor %r11, %r11
-  shr $29, %rax                  #-----------------------------XXX
-  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
   mov %rax, %r10
   mov %r9, %rax
-  shr $29, %rax                  #-----------------------------XXX
-  and $7, %rax                   #00000000000000000000000000000111 (:3)
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
   mul %r10
   mov $7, %rbx
   mov $0, %rdx
@@ -286,12 +295,12 @@ y5: .quad 2937
   or %rdx, %r11
 
   mov %r12, %rax
-  shr $25, %rax                  #-------------------------000XXXX
-  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
   mov %rax, %r10
   mov %r9, %rax
-  shr $25, %rax                  #-------------------------000XXXX
-  and $15, %rax                  #00000000000000000000000000001111 (:4)
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
   mul %r10
   mov $15, %rbx
   mov $0, %rdx
@@ -300,12 +309,12 @@ y5: .quad 2937
   or %rdx, %r11
 
   mov %r12, %rax
-  shr $20, %rax                  #--------------------0000000XXXXX
-  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
   mov %rax, %r10
   mov %r9, %rax
-  shr $20, %rax                  #--------------------0000000XXXXX
-  and $31, %rax                  #00000000000000000000000000011111 (:5)
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
   mul %r10
   mov $31, %rbx
   mov $0, %rdx
@@ -314,12 +323,12 @@ y5: .quad 2937
   or %rdx, %r11
 
   mov %r12, %rax
-  shr $13, %rax                  #-------------000000000000XXXXXXX
-  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
   mov %rax, %r10
   mov %r9, %rax
-  shr $13, %rax                  #-------------000000000000XXXXXXX
-  and $127, %rax                 #00000000000000000000000001111111 (:7)
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
   mul %r10
   mov $127, %rbx
   mov $0, %rdx
@@ -327,11 +336,11 @@ y5: .quad 2937
   shl $13, %rdx
   or %rdx, %r11
 
-  mov %r12, %rax                 #0000000000000000000XXXXXXXXXXXXX
-  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  mov %r12, %rax                 # 0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
   mov %rax, %r10
   mov %r9, %rax
-  and $8191, %rax                #00000000000000000001111111111111 (:13)
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
   mul %r10
   mov $8192, %rbx
   mov $0, %rdx
@@ -377,10 +386,11 @@ leave_cmprns:
   pop %rbx
 .endm
 
-.text
+#  Main. Mainly Testing
+#  Alter to show inner workings
 .global main
 main:
-  movq %rsp, %rbp #for correct debugging
+  movq %rsp, %rbp # for correct debugging
 
 rns_check:
   rns $256
