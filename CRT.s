@@ -358,6 +358,84 @@ y5: .quad 2937
   pop %rbx
 .endm
 
+.macro shl_rns
+  push %rbx
+  push %rcx
+  push %rdx
+  push %r9
+  push %r10
+  push %r11
+
+  xor %rdx, %rdx
+
+  mov %rax, %r9 
+    
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
+  mov %rax, %r10  
+  shr %r10                       # ------------------------------11 |1
+  and $1, %rax                   # -------------------------------1
+  shl $2, %rax                   # -----------------------------1XX
+  or %rax, %r10
+  shl $29, %rax
+  or %rax, %r11
+
+  mov %r9, %rax
+  
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
+  mov %rax, %r10
+  shr %r10                       # -----------------------------111 |1
+  and $1, %rax                   # -------------------------------1
+  shl $3, %rax                   # ----------------------------1XXX
+  or %rax, %r10
+  shl $25, %rax
+  or %rax, %r11
+
+  mov %r9, %rax
+
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
+  mov %rax, %r10
+  shr %r10                       # ----------------------------1111 |1
+  and $1, %rax                   # -------------------------------1
+  shl $4, %rax                   # ----------------------------1XXX
+  or %rax, %r10
+  shl $20, %rax
+  or %rdx, %r11
+
+  mov %r9, %rax
+  
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
+  mov %rax, %r10
+  shr %r10                       # --------------------------111111 |1
+  and $1, %rax                   # -------------------------------1
+  shl $6, %rax                   # -------------------------1XXXXXX  
+  or %rax, %r10
+  shl $13, %rax
+  or %rax, %r11
+
+
+  mov %r9, %rax                  
+                                 # 0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
+  mov %rax, %r10
+  shr %r10                       # --------------------111111111111 |1
+  and $1, %rax                   # -------------------------------1
+  shl $12, %rax                  # --------------------1XXXXXXXXXXX  
+  or %rax, %r11
+
+  mov %r11, %rax
+
+  pop %r11
+  pop %r10
+  pop %r9
+  pop %rdx
+  pop %rcx
+  pop %rbx
+.endm
+
 #  Compare two RNS numbers. One in RAX, other as ARG.
 #  If RAX bigger -> RAX = 1, If RAX smaller -> RAX = -1, If equal -> RAX = 0
 .macro cmprns rns_num
@@ -394,9 +472,8 @@ main:
 
 rns_check:
   rns $256
-  mov %rax, %rbx
-  rns $1410
-  cmprns %rbx
+  shl_rns
+  drns %rax
 
 exit:
   movq $SYSEXIT, %rax
