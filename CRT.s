@@ -1,4 +1,4 @@
-xor %rdx, %rdx# Group 60
+# Group 60
 # Issue 14 - x86 architecture software RNS extension
 
 .data
@@ -358,7 +358,7 @@ y5: .quad 2937
   pop %rbx
 .endm
 
-.macro shl_rns
+.macro shr_rns_step
   push %rbx
   push %rcx
   push %rdx
@@ -367,28 +367,30 @@ y5: .quad 2937
   push %r11
 
   xor %rdx, %rdx
+  xor %r11, %r11
 
-  mov %rax, %r9 
-    
+  mov %rax, %r9
+  mov %rax, %r8
+
   shr $29, %rax                  # -----------------------------XXX
   and $7, %rax                   # 00000000000000000000000000000111 (:3)
-  mov %rax, %r10  
+  mov %rax, %r10
   shr %r10                       # ------------------------------11 |1
   and $1, %rax                   # -------------------------------1
   shl $2, %rax                   # -----------------------------1XX
-  or %rax, %r10
+  or %r10, %rax
   shl $29, %rax
   or %rax, %r11
 
   mov %r9, %rax
-  
+
   shr $25, %rax                  # -------------------------000XXXX
   and $15, %rax                  # 00000000000000000000000000001111 (:4)
   mov %rax, %r10
   shr %r10                       # -----------------------------111 |1
   and $1, %rax                   # -------------------------------1
   shl $3, %rax                   # ----------------------------1XXX
-  or %rax, %r10
+  or %r10, %rax
   shl $25, %rax
   or %rax, %r11
 
@@ -400,30 +402,30 @@ y5: .quad 2937
   shr %r10                       # ----------------------------1111 |1
   and $1, %rax                   # -------------------------------1
   shl $4, %rax                   # ----------------------------1XXX
-  or %rax, %r10
+  or %r10, %rax
   shl $20, %rax
-  or %rdx, %r11
+  or %rax, %r11
 
   mov %r9, %rax
-  
+
   shr $13, %rax                  # -------------000000000000XXXXXXX
   and $127, %rax                 # 00000000000000000000000001111111 (:7)
   mov %rax, %r10
   shr %r10                       # --------------------------111111 |1
   and $1, %rax                   # -------------------------------1
-  shl $6, %rax                   # -------------------------1XXXXXX  
-  or %rax, %r10
+  shl $6, %rax                   # -------------------------1XXXXXX
+  or %r10, %rax
   shl $13, %rax
   or %rax, %r11
 
-
-  mov %r9, %rax                  
+  mov %r9, %rax
                                  # 0000000000000000000XXXXXXXXXXXXX
   and $8191, %rax                # 00000000000000000001111111111111 (:13)
   mov %rax, %r10
   shr %r10                       # --------------------111111111111 |1
   and $1, %rax                   # -------------------------------1
-  shl $12, %rax                  # --------------------1XXXXXXXXXXX  
+  shl $12, %rax                  # -------------------1XXXXXXXXXXXX
+  or %r10, %rax
   or %rax, %r11
 
   mov %r11, %rax
@@ -434,6 +436,22 @@ y5: .quad 2937
   pop %rdx
   pop %rcx
   pop %rbx
+.endm
+
+.macro shr_rns positions
+  push %rsi
+  mov \positions, %rsi
+
+filip_tribute:
+  cmp $0, %rsi
+  jle exit_shr_rns
+
+  shr_rns_step
+  dec %rsi
+  jmp filip_tribute
+
+exit_shr_rns:
+  pop %rsi
 .endm
 
 #  Compare two RNS numbers. One in RAX, other as ARG.
@@ -464,6 +482,7 @@ leave_cmprns:
   pop %rbx
 .endm
 
+.text
 #  Main. Mainly Testing
 #  Alter to show inner workings
 .global main
@@ -471,8 +490,10 @@ main:
   movq %rsp, %rbp # for correct debugging
 
 rns_check:
-  rns $256
-  shl_rns
+  rns $128
+
+  shr_rns $2
+
   drns %rax
 
 exit:
