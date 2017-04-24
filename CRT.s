@@ -1,4 +1,4 @@
-# Group 60
+xor %rdx, %rdx# Group 60
 # Issue 14 - x86 architecture software RNS extension
 
 .data
@@ -44,35 +44,35 @@ y5: .quad 2937
   xor %rbx, %rbx              # rbx - result
 
   mov %r9, %rax
-  mov $0, %rdx
+  xor %rdx, %rdx
   mov $7, %rcx
   div %rcx
   shl $29, %rdx
   mov %rdx, %rbx
 
   mov %r9, %rax
-  mov $0, %rdx
+  xor %rdx, %rdx
   mov $15, %rcx
   div %rcx
   shl $25, %rdx
   or  %rdx, %rbx
 
   mov %r9, %rax
-  mov $0, %rdx
+  xor %rdx, %rdx
   mov $31, %rcx
   div %rcx
   shl $20, %rdx
   or  %rdx, %rbx
 
   mov %r9, %rax
-  mov $0, %rdx
+  xor %rdx, %rdx
   mov $127, %rcx
   div %rcx
   shl $13, %rdx
   or  %rdx, %rbx
 
   mov %r9, %rax
-  mov $0, %rdx
+  xor %rdx, %rdx
   mov $8192, %rcx
   div %rcx
   or  %rdx, %rbx
@@ -160,7 +160,7 @@ y5: .quad 2937
 
   # suma mod M
   mov M, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   mov %r8, %rax
   div %rbx
   mov %rdx, %rax
@@ -197,7 +197,7 @@ y5: .quad 2937
   and $7, %rax                   # 00000000000000000000000000000111 (:3)
   add %r10, %rax
   mov $7, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $29, %rdx
   or %rdx, %r11
@@ -211,7 +211,7 @@ y5: .quad 2937
   and $15, %rax                  # 00000000000000000000000000001111 (:4)
   add %r10, %rax
   mov $15, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $25, %rdx
   or %rdx, %r11
@@ -225,7 +225,7 @@ y5: .quad 2937
   and $31, %rax                  # 00000000000000000000000000011111 (:5)
   add %r10, %rax
   mov $31, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $20, %rdx
   or %rdx, %r11
@@ -239,7 +239,7 @@ y5: .quad 2937
   and $127, %rax                 # 00000000000000000000000001111111 (:7)
   add %r10, %rax
   mov $127, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $13, %rdx
   or %rdx, %r11
@@ -251,7 +251,7 @@ y5: .quad 2937
   and $8191, %rax                # 00000000000000000001111111111111 (:13)
   add %r10, %rax
   mov $8192, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   or %rdx, %r11
 
@@ -289,7 +289,7 @@ y5: .quad 2937
   and $7, %rax                   # 00000000000000000000000000000111 (:3)
   mul %r10
   mov $7, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $29, %rdx
   or %rdx, %r11
@@ -303,7 +303,7 @@ y5: .quad 2937
   and $15, %rax                  # 00000000000000000000000000001111 (:4)
   mul %r10
   mov $15, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $25, %rdx
   or %rdx, %r11
@@ -317,7 +317,7 @@ y5: .quad 2937
   and $31, %rax                  # 00000000000000000000000000011111 (:5)
   mul %r10
   mov $31, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $20, %rdx
   or %rdx, %r11
@@ -331,7 +331,7 @@ y5: .quad 2937
   and $127, %rax                 # 00000000000000000000000001111111 (:7)
   mul %r10
   mov $127, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   shl $13, %rdx
   or %rdx, %r11
@@ -343,7 +343,7 @@ y5: .quad 2937
   and $8191, %rax                # 00000000000000000001111111111111 (:13)
   mul %r10
   mov $8192, %rbx
-  mov $0, %rdx
+  xor %rdx, %rdx
   div %rbx
   or %rdx, %r11
 
@@ -380,7 +380,7 @@ arg_greater:
   jmp leave_cmprns
 
 both_equal:
-  mov $0, %rax
+  xor %rax, %rax
 
 leave_cmprns:
   pop %rbx
