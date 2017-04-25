@@ -482,6 +482,64 @@ leave_cmprns:
   pop %rbx
 .endm
 
+#  mrc from rns
+#  RAX = mrc(RAX)
+.macro mrs
+  push %rbx
+  push %rcx
+  push %rdx
+  push %r9
+  push %r10
+  push %r11
+  push %r12
+
+  mov %rax, %r12
+  
+  mov %r12, %rax                 # 0000000000000000000XXXXXXXXXXXXX
+  and $8191, %rax                # 00000000000000000001111111111111 (:13)
+  mov $m4, %r9
+  mul %r9
+  mov %rax, %r10
+  
+
+  mov %r12, %rax
+  shr $13, %rax                  # -------------000000000000XXXXXXX
+  and $127, %rax                 # 00000000000000000000000001111111 (:7)
+  mov $m3, %r9
+  mul %r9
+  mul %r10
+  mov %rax, %r10
+
+  mov %r12, %rax
+  shr $20, %rax                  # --------------------0000000XXXXX
+  and $31, %rax                  # 00000000000000000000000000011111 (:5)
+  mov $m2, %r9
+  mul %r9
+  mul %r10
+  mov %rax, %r10
+  
+  mov %r12, %rax 
+  shr $25, %rax                  # -------------------------000XXXX
+  and $15, %rax                  # 00000000000000000000000000001111 (:4)
+  mov $m1, %r9
+  mul %r9
+  mul %r10
+  mov %rax, %r10
+                  
+  shr $29, %rax                  # -----------------------------XXX
+  and $7, %rax                   # 00000000000000000000000000000111 (:3)
+  mul %r10
+
+  pop %r12
+  pop %r11
+  pop %r10
+  pop %r9
+  pop %rdx
+  pop %rcx
+  pop %rbx
+.endm
+
+
 .text
 #  Main. Mainly Testing
 #  Alter to show inner workings
