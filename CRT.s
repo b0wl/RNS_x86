@@ -166,12 +166,12 @@ y5: .quad 2937
   mov %rdx, %rax
 
   # geting back registers values from stack
-  push %rcx
-  push %rdx
-  push %rbx
-  push %r9
-  push %r8
-  push %r11
+  pop %rcx
+  pop %rdx
+  pop %rbx
+  pop %r9
+  pop %r8
+  pop %r11
 .endm
 
 #  Add two RNS numbers. One in RAX, other as ARG.
