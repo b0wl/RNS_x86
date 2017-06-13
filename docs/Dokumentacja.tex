@@ -31,7 +31,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 \begin{document}
 \title{Rozszerzenie Programowe RNS Procesora x86 \\ Mnożenie Montgomerego}
 
-\author{Jan~Jurec,~\IEEEmembership{Student,~PWR,}
+\author{Jan~Jakub~Jurec,~\IEEEmembership{Student,~PWR,}
         Filip~Toruń,~\IEEEmembership{Student,~PWR}}
 
 \markboth{sprawozdanie z projektu z organizacji i architektury komputerow, Czerwiec~2017}%
@@ -163,8 +163,13 @@ System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka 
 
 
 
-\section{Conclusion}
-The conclusion goes here.
+\section{IMPLEMENTACJA}
+\IEEEPARstart{W}{art} lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+
+\section{PODSUMOWANIE}
+\IEEEPARstart{A}{utorzy} są zdania, że zrealizowali cel projektu. Poprawnie zaimplementowali dwa algorytmy mnożenia Montgomerego (w tym jeden bardzo wydajny czasowo i pamięciowo) dla liczb składających się z dowolnej ilości słów dowolnej wielkości. Zrozumiawszy sztuczki matematyczne użyte w przykładowych implementacjach dokonanych przez Koca i Acara rozsądnym czasie zdołaliby zaimplementować kolejne algorytmy.  \\
+Dobrym pomysłem było podzielenie projektu na dwie części. Łagodne wprowadzenie do systemów resztowych zrealizowane poprzez implementację prostych algorytmów dało autorom podstawowe obycie i intuicję podczas analizowania algorytmów przedstawionych przez ww. badaczy. \\
+Jest pocieszającym fakt, że dzięki pokazanym algorytmom można znacznie przyspieszyć mnożenie a przez to podnoszenie do potęgi w systemach modulo nawet na niededykowanym do tego sprzęcie elektronicznym - na przykład komputerach osobistych. Dzięki naukowcom takim jak Piotr Montgomery kryptografia i bezpieczeństwo danych nie są domeną wybranych, których stać na specjalistyczny hardware a stają się dostępne dla wszystkich. Bez wątpienia w konewkwecji zwiększa to spokój wewnętrzny i komfort ogółu zinformatyzowanego świata.
 
 
 
@@ -199,7 +204,7 @@ TODO: KOD Z MONPRO.PY TUTAJ
 
 Jan Jurec pragnie podziękować swojej narzeczonej Katarzynie za nieustanne wsparcie w uprawianiu nauki, pomoc w ciężkich chwilach i pyszne obiady, które dostarczają mu energii i motywacji do zgłębiania tajników organizacji i arytmetyki komputerów.
 Filip Toruń ... TODO: DOPISAĆ
-Obaj zaś dziękują Doktorowi Piotrowi Patronikowi, który dzielił się swoją wiedzą i skutecznie motywował do skutecznego przeprowadzenia projektu.
+Obaj zaś dziękują Doktorowi Piotrowi Patronikowi, który dzielił się swoją wiedzą i skutecznie motywował do udanego przeprowadzenia projektu.
 
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
@@ -233,9 +238,8 @@ Obaj zaś dziękują Doktorowi Piotrowi Patronikowi, który dzielił się swoją
 % (used to reserve space for the reference number labels box)
 \begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+\bibitem{IEEEhowto:Koc}
+C.~K.~Koc and T.~Acar, \emph{Analyzing and Comparing Montgomery Multiplication Algorithms}, IEEE Micro, 16(3):26-33, June 1996.
 
 \end{thebibliography}
 
@@ -247,15 +251,15 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
 % \includegraphics command within an optional argument. (You could create
 % your own custom macro containing the \includegraphics command to make things
 % simpler here.)
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{jjjurec}}]{Jan Jakub Jurec}
-Jan Jakub Jurec jest po raz trzeci studentem trzeciego roku Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka. Marzeniem autora jest zdanie kursu Organizacja i Architektura Komputerów za trzecim podejściem, bo (jak to drzewiej mawiano) "do trzech razy sztuka"! \\
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{jjjurec}}]{Jan Jakub Jurec} jest po raz trzeci studentem trzeciego roku Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka. Marzeniem autora jest zdanie kursu Organizacja i Architektura Komputerów za trzecim podejściem, jako że kieruje się zasadą "do trzech razy sztuka"! \\
 E-mail: jurec@protonmail.com
 \end{IEEEbiography}
 
 
 \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{ftorun}}]{Filip Torun}
-Jest studentem Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka. \\
+jest studentem Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka. \\
 E-mail: 209428@student.pwr.edu.pl
+TODO: MAKE IT PERSONAL
 \end{IEEEbiography}
 
 %\vfill
