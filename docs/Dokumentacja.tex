@@ -62,8 +62,61 @@ System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka 
 
 
 \IEEEraisesectionheading{\section{WSTĘP}\label{sec:wstęp}}
-\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskeigo twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego zastosowania.
+\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskeigo twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego przeznaczenia.
 
+\section{MNOŻENIE MONTGOMEREGO}
+\IEEEPARstart{W}{arty} ponownego podkreślenia jest fakt, że produktem mnożenia Montgomerego jest liczba w systemie modulo n. Wszystkie operacje przedstawione w tym rozdziale odbywają się właśnie w takim systemie. Należy porzucić intuicje wyniesione z arytmetyki liczb wymiernych.\\
+Algorytm Montgomerego działa dla dowolnie wielkich liczb naturalnych. Operuje on bowiem na słowach liczby. Dla przykładu: liczba 256-bitowa może składać się z 8 słów 32-bitowych albo 4 64-bitowych. Wynikiem mnożenia Montgomerego jest produkt Montgomerego o następującym zapisie:
+
+\begin{align*}
+  &MonPro(a,b) = abr^{-1}\ mod\ n
+\end{align*}
+\noindent
+Zdaniem autorów przed objaśnieniem wprowadzonych symbolów warto wyjaśnić, że $r^{-1}$ nie oznacza odwrotności liczby w sensie wymiernym a raczej liczbę, która po przemnożeniu przez $r$ da resztę równą $1$ po podzieleniu przez $n$. Jest to odwrotność multiplikatywna. W ścisłym zapisie matematycznym:
+
+\begin{align*}
+  &rr^{-1}=1\ (mod\ n)
+\end{align*}
+\noindent
+Wprowadzona liczba $n$ oznacza podstawę systemu resztowego a $r$ arbitralnie jest dobranym dodatkowym parametrem. Ważne, żeby $a$, $b$, $r$ i $n$ spełniały poniższe dodatkowe założenia:  
+
+\begin{align*}
+   &a, b < n  \\
+   &nwd(n,r) = 1  \\
+   &ab < r 
+\end{align*}
+\noindent
+Aby dodatkowo usprawnić działanie algorytmu założono, że:
+
+\begin{align*}
+  &r = 2^k \\
+  &2^{k-1} \leq n < 2^k 
+\end{align*}
+\noindent
+Spełnienie pierwszego równania zapewni szybkość wykonania operacji z użyciem $r$, drugiego natomiast spowoduje, że możliwe będzie używanie względnie dużych $a$ i $b$. Przed wprowadzeniem nowych symboli zostanie wreszcie przedstawiony algorytm mnożenia Montgomerego w trzech krokach. 
+
+\begin{align*}
+  &t = ab\\
+  &u = \frac{t+(tn'\ mod\ r)n}{r}\\
+  &u \geq n\ ?\ r = u-n\ :\ r = u
+\end{align*}
+\noindent
+Jasnym jest, że obliczenie $t$ w kroku pierwszym przyspieszy późniejsze obliczenia. Krok drugi natomiast praktycznie oblicza prudukt z $r^{-1}$ w $(mod\ n)$. Ostatni krok tak naprawdę wykonuje działanie oblicza już ostatnią resztę z dzielenia przez $n$ poprzez odjęcia $n$ od ewentualnie za dużego wyniku. Nowym wprowadzonym do działań symbolem jest $n'$. Jest to liczba spełniająca równanie:
+
+\begin{align*}
+  &rr^{-1}-nn'=1\ (mod\ n)
+\end{align*}
+
+a więc:
+
+\begin{align*}
+  &n'= \frac{1}{r-n}\ mod\ n
+\end{align*}
+
+Oznacza to tyle, że $n'$ jest odwrotnością multiplikatywną liczby $r-n$ w $(mod\ n)$. \\
+Przedstawione implementacje mnożenia Montgomerego korzystają z powyższych kroków. Metoda Oddzielnego Skanowania Operandów (en. SOS - Separated Operand Scanning) wszystkie kroki wykonuje kaskadowo, po sobie. Jednak metoda Zgrubnie Zintegrowanego Skanowania Operadnów (en. CIOS - Coarsely Integrated Operand Scanning) łączy pierwsze dwa kroki, dzięki czemu zajmuje mniej miejsca w pamięci oraz wymaga wykonania mniejszej ilości instrukcji.
+
+\noindent
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
