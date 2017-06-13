@@ -7,7 +7,7 @@
 \usepackage[nocompress]{cite}
 
 \usepackage[pdftex]{graphicx}
-\graphicspath{{../pdf/}{../jpeg/}}
+\graphicspath{{./jpeg/}}
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 
 \usepackage{amsmath}
@@ -33,8 +33,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 
 \author{Jan~Jurec,~\IEEEmembership{Student,~PWR,}
         Filip~Toruń,~\IEEEmembership{Student,~PWR}% <-this % stops a space
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem Jan Jurec jest po raz trzeci studentem trzeciego roku Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka.\protect\\
-E-mail: jurec@protonmail.com
+\IEEEcompsocitemizethanks{
 \IEEEcompsocthanksitem Filip Toruń jest studentem Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka.\protect\\
 E-mail: 209428@student.pwr.edu.pl}% <-this % stops a space
 \thanks{Sprawozdanie oddane 14 czerwca 2017}}
@@ -67,25 +66,7 @@ System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka 
 
 
 \IEEEraisesectionheading{\section{WSTĘP}\label{sec:wstęp}}
-\IEEEPARstart{M}{nożenie} demo file is intended to serve as a ``starter file''
-for IEEE Computer Society journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
-
-\hfill mds
- 
-\hfill August 26, 2015
-
-\subsection{Subsection Heading Here}
-Subsection text here.
-
-% needed in second column of first page if using \IEEEpubid
-%\IEEEpubidadjcol
-
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskeigo twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego zastosowania.
 
 
 % An example of a floating figure using the graphicx package.
@@ -209,27 +190,20 @@ The conclusion goes here.
 
 
 \appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
+\section{Podstawowe operacje RNS w ASM~AT\&T}
+TODO: KOD Z CRT.S TUTAJ
 
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
+\section{Mnożenie Montgomerego SOS i CIOS w Pythonie}
+TODO: KOD Z MONPRO.PY TUTAJ
 
 
-% use section* for acknowledgment
-\ifCLASSOPTIONcompsoc
-  % The Computer Society usually uses the plural form
-  \section*{Acknowledgments}
-\else
-  % regular IEEE prefers the singular form
-  \section*{Acknowledgment}
-\fi
+\section*{Podziękowanie}
 
-
-The authors would like to thank...
-
+Jan Jurec pragnie podziękować swojej narzeczonej Katarzynie za nieustanne wsparcie w uprawianiu nauki, pomoc w ciężkich chwilach i pyszne obiady, które dostarczają mu energii i motywacji do zgłębiania tajników organizacji i arytmetyki komputerów.
+Filip Toruń ... TODO: DOPISAĆ
+Obaj zaś dziękują Doktorowi Piotrowi Patronikowi, który dzielił się swoją wiedzą i skutecznie motywował do skutecznego przeprowadzenia projektu.
 
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
@@ -277,11 +251,9 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to {\LaTeX}}, 3rd~ed.\hskip 1em plus
 % \includegraphics command within an optional argument. (You could create
 % your own custom macro containing the \includegraphics command to make things
 % simpler here.)
-%\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
-% or if you just want to reserve a space for a photo:
-
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{jjjurec}}]{Jan Jakub Jurec}
+Jan Jakub Jurec jest po raz trzeci studentem trzeciego roku Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka. Marzeniem autora jest zdanie kursu Organizacja i Architektura Komputerów za trzecim podejściem, bo (jak to drzewiej mawiano) "do trzech razy sztuka"! \\
+E-mail: jurec@protonmail.com
 \end{IEEEbiography}
 
 % if you will not have a photo at all:
@@ -289,29 +261,10 @@ Biography text here.
 Biography text here.
 \end{IEEEbiographynophoto}
 
-% insert where needed to balance the two columns on the last page with
-% biographies
-%\newpage
-
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
-
-% You can push biographies down or up by placing
-% a \vfill before or after them. The appropriate
-% use of \vfill depends on what kind of text is
-% on the last page and whether or not the columns
-% are being equalized.
 
 %\vfill
-
-% Can be used to pull up biographies so that the bottom of the last one
-% is flush with the other column.
 %\enlargethispage{-5in}
 
-
-
-% that's all folks
 \end{document}
 
 
