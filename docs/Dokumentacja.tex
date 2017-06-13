@@ -113,10 +113,10 @@ a więc:
   &n'= \frac{1}{r-n}\ mod\ n
 \end{align*}
 
-Oznacza to tyle, że $n'$ jest odwrotnością multiplikatywną liczby $r-n$ w $(mod\ n)$. \\
-Przedstawione implementacje mnożenia Montgomerego korzystają z powyższych kroków. Metoda Oddzielnego Skanowania Operandów (en. SOS - Separated Operand Scanning) wszystkie kroki wykonuje kaskadowo, po sobie. Jednak metoda Zgrubnie Zintegrowanego Skanowania Operadnów (en. CIOS - Coarsely Integrated Operand Scanning) łączy pierwsze dwa kroki, dzięki czemu zajmuje mniej miejsca w pamięci oraz wymaga wykonania mniejszej ilości instrukcji.
-
 \noindent
+Oznacza to tyle, że $n'$ jest odwrotnością multiplikatywną liczby $r-n$ w $(mod\ n)$. \\ \newline
+Przedstawione implementacje mnożenia Montgomerego korzystają z powyższych kroków. Metoda Oddzielnego Skanowania Operandów (en. SOS - Separated Operand Scanning) wszystkie kroki wykonuje kaskadowo, po sobie. Jednak metoda Zgrubnie Zintegrowanego Skanowania Operadnów (en. CIOS - Coarsely Integrated Operand Scanning) łączy pierwsze dwa kroki, dzięki czemu zajmuje mniej miejsca w pamięci oraz wymaga wykonania mniejszej ilości instrukcji. W żadnej implementacji nie jest użyte $r^{-1}$. Jest ono jednak potrzebne do sprawdzenia poprawności wyniku na przykład w programie \texttt{gp}.
+
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
