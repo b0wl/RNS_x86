@@ -115,31 +115,11 @@ def MonProSOS(a, b, s, w, n):
     for i, w in enumerate(u):
         temp += w*W**i
     print('Step 2:')
+    print('u := ' + str(u))
     print('u := ' + str(temp))
 
     # Step 3
-
-    B = 0
-    for i in range(s):
-        double_word = u[i] - nT[i] - B
-        B, D = double_word // W, double_word % W
-        t[i] = D
-    double_word = u[s] - B
-    B, D = double_word // W, double_word % W
-    t[s] = D
-    if not B:
-        cT = t[:s]
-    else:
-        cT = u[:s]
-
-    c = 0
-    for i, w in enumerate(cT):
-        c += w*W**i
-
-    print('Step 3:')
-    print('result := ' + str(c))
-
-    return c
+    return step3(u,nT,W,t[-s-1:])
 
 
 def MonProCIOS(a, b, s, w, n):
@@ -200,16 +180,26 @@ def MonProCIOS(a, b, s, w, n):
             t[j] = t[j+1]
 
     u = t
+    u.pop()
     # check
     temp = 0
-    for i, w in enumerate(t):
-        temp += w * W ** i
+    for i, w in enumerate(u):
+        temp += w*W**i
 
     print('tT := ' + str(t))
+    print('tT := ' + str(u))
     print('u := ' + str(temp))
 
     # Step 3
+    return step3(u,nT,W,t)
 
+
+def step3(u,nT,W,t):    
+    print('Step 3:')   
+    print(str(u))     
+    print(str(nT))   
+    print(str(W))   
+    print(str(t[-s:])) 
     B = 0
     for i in range(s):
         double_word = u[i] - nT[i] - B
@@ -218,19 +208,19 @@ def MonProCIOS(a, b, s, w, n):
     double_word = u[s] - B
     B, D = double_word // W, double_word % W
     t[s] = D
-    if not B:
+    if B:
         cT = t[:s]
     else:
         cT = u[:s]
 
     c = 0
     for i, w in enumerate(cT):
-        c += w * W ** i
+        c += w*W**i
 
-    print('Step 3:')
+
     print('result := ' + str(c))
-
     return c
+
 
 if __name__ == '__main__':
     a = 100
@@ -241,4 +231,9 @@ if __name__ == '__main__':
     print('SOS------------')
     c = MonProSOS(a, b, s, w, n)
     print('CIOS-----------')
+    a = 100
+    b = 240
+    s = 4
+    w = 4
+    n = 33533
     c = MonProCIOS(a, b, s, w, n)
