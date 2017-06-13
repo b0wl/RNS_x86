@@ -44,9 +44,14 @@ E-mail: 209428@student.pwr.edu.pl}% <-this % stops a space
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
 
+% Justowanie abstraktu
+\makeatletter
+\long\def\@IEEEtitleabstractindextextbox#1{\parbox{0.922\textwidth}{#1}}
+\makeatother
+
 \IEEEtitleabstractindextext{
 \begin{abstract}
-Mnożenie Mongomerego abstrakt
+Kryptografia jest jedną z najszybciej rozwijających się i najbardziej kluczowych dziedzin informatyki. Skuteczne zaszyfrowanie danych pozwala na bezpieczne ich przechowywanie oraz wymianę choćby w systemach bankowych czy prywatnych rozmowach. Do najbezpieczniejszych systemów kryptograficznych należą kryptosystemy asymetryczne, wśród których bardzo popularne są algorytmy RSA i Diffiego-Hellmana. Oba oparte są na operacjach modularnej na wielkich liczbach, która jest niezwykle kosztowna. Ten artykuł pokazuje drogę, jaką przeszli autorzy, by zbliżyć się do zrozumienia  działania mnożenia~Montgomerego - algorytmu, który znacznie zmniejsza koszt obliczeń w arytmetyce modulo. 
 \end{abstract}
 
 \begin{IEEEkeywords}
