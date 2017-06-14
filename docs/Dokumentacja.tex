@@ -11,6 +11,7 @@
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 
 \usepackage{amsmath}
+\usepackage[listings,skins]{tcolorbox}
 \interdisplaylinepenalty=2500
 
 \newcommand\MYhyperrefoptions{bookmarks=true,bookmarksnumbered=true,
@@ -34,7 +35,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 \author{Jan~Jakub~Jurec,~\IEEEmembership{Student,~PWR,}
         Filip~Toruń,~\IEEEmembership{Student,~PWR}}
 
-\markboth{sprawozdanie z projektu z organizacji i architektury komputerow, Czerwiec~2017}%
+\markboth{sprawozdanie z projektu z organizacji i architektury komputerów, Czerwiec~2017}%
 {Shell \MakeLowercase{\textit{et al.}}: sprawozdanie z projektu z organizacji i architektury komputerow, Czerwiec~2017}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
@@ -46,7 +47,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 
 \IEEEtitleabstractindextext{
 \begin{abstract}
-Kryptografia jest jedną z najszybciej rozwijających się i najbardziej kluczowych dziedzin informatyki. Skuteczne zaszyfrowanie danych pozwala na bezpieczne ich przechowywanie oraz wymianę choćby w systemach bankowych czy prywatnych rozmowach. Do najbezpieczniejszych systemów kryptograficznych należą kryptosystemy asymetryczne, wśród których bardzo popularne są algorytmy RSA i Diffiego-Hellmana. Oba oparte są na operacjach modularnej na wielkich liczbach, która jest niezwykle kosztowna. Ten artykuł pokazuje drogę, jaką przeszli autorzy, by zbliżyć się do zrozumienia  działania mnożenia~Montgomerego - algorytmu, który znacznie zmniejsza koszt obliczeń w arytmetyce modulo. 
+Kryptografia jest jedną z najszybciej rozwijających się i najbardziej kluczowych dziedzin informatyki. Skuteczne zaszyfrowanie danych pozwala na bezpieczne ich przechowywanie oraz wymianę choćby w systemach bankowych czy prywatnych rozmowach. Do najbezpieczniejszych systemów kryptograficznych należą kryptosystemy asymetryczne, wśród których bardzo popularne są algorytmy RSA i Diffiego-Hellmana. Oba oparte są na operacjach modularnej na wielkich liczbach, która jest niezwykle kosztowna. Ten artykuł pokazuje drogę, jaką przeszli autorzy, by zbliżyć się do zrozumienia  działania mnożenia~Montgomerego - algorytmu, który znacznie zmniejsza koszt obliczeń w arytmetyce modulo. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -62,7 +63,7 @@ System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka 
 
 
 \IEEEraisesectionheading{\section{WSTĘP}\label{sec:wstęp}}
-\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskeigo twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego przeznaczenia.
+\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskeigo twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego zastosowania.
 
 \section{MNOŻENIE MONTGOMEREGO}
 \IEEEPARstart{W}{arty} ponownego podkreślenia jest fakt, że produktem mnożenia Montgomerego jest liczba w systemie modulo n. Wszystkie operacje przedstawione w tym rozdziale odbywają się właśnie w takim systemie. Należy porzucić intuicje wyniesione z arytmetyki liczb wymiernych.\\
@@ -118,7 +119,71 @@ Oznacza to tyle, że $n'$ jest odwrotnością multiplikatywną liczby $r-n$ w $(
 Przedstawione implementacje mnożenia Montgomerego korzystają z powyższych kroków. Metoda Oddzielnego Skanowania Operandów (en. SOS - Separated Operand Scanning) wszystkie kroki wykonuje kaskadowo, po sobie. Jednak metoda Zgrubnie Zintegrowanego Skanowania Operadnów (en. CIOS - Coarsely Integrated Operand Scanning) łączy pierwsze dwa kroki, dzięki czemu zajmuje mniej miejsca w pamięci oraz wymaga wykonania mniejszej ilości instrukcji. W żadnej implementacji nie jest użyte $r^{-1}$. Jest ono jednak potrzebne do sprawdzenia poprawności wyniku na przykład w programie \texttt{gp}.
 
 \section{IMPLEMENTACJA}
-\IEEEPARstart{W}{art} lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+\subsection{Metoda Separated Operand Scanning}\label{sec:metoda1}
+\IEEEPARstart{P}{ierwszą} metodą analizowaną przez nas była metoda Separated Operand Scanning. Postępuje ona zgodnie z przedstawionym powyżej schematem i dzieli się na 3 kroki.
+Pierwszy krok wygląda następująco:
+\begin{lstlisting}
+for i=0 to s-1
+  C := 0
+    for j=0 to s-1
+      (C,S) := t[i+j] + a[j]*b[i] + C
+      t[i+j] := S
+    t[i+s] := C
+\end{lstlisting}
+
+\noindent Przy czym dodać trzeba, że tablica t musi być wyzerowana, będzie mieć ona długość 2s słów.\\ Krok drugi: 
+\begin{lstlisting}
+for i=0 to s-1
+  C := 0
+  m := t[i]*n'[0] mod W
+  for j=0 to s-1
+    (C,S) := t[i+j] + m*n[j] + C
+    t[i+j] := S
+  ADD (t[i+s],C)
+for j=0 to s
+  u[j] := t[j+s]
+\end{lstlisting}
+
+\noindent Tutaj naszym produktem jest tablica $u$ o długości s+1 słów. Wartym nadmienienia jest, że korzystamy z $n'[0]=n'\ mod\ 2^w$ $-$ najmniej znaczący bit 
+odwrotności multiplikatywnej z~r-n. Funkcja ADD propaguje zadane przeniesienie na bardziej znaczące słowa.
+
+\noindent Ostatni krok powtarza się w obu omawianych metodach. I jest to zwykłe porównanie $u$ z $n$ i zwrócenie $u-n$ gdy $u$ jest większe, a w przeciwnym wypadku zwracamy po prostu $u$.
+\begin{lstlisting}
+B := 0
+for i=0 to s-1
+  (B,D) := u[i] - n[i] - B
+  t[i] := D
+(B,D) := u[s] - B
+t[s] := D
+if B = 0 then return t[0],t[1],...t[s-1]
+	 else return u[0],u[1],...u[s-1]
+\end{lstlisting} 
+\noindent Ten krok zwraca nam już wynik.
+
+\subsection{Metoda Coarsely Integrated Operand Scanning}\label{sec:metoda2}
+\IEEEPARstart{D}{ruga} metoda integruje krok pierwszy oraz drugi, dzięki czemu zmniejszone jest zapotrzebowanie na pamięć. Integracja ta polega na wykorzystaniu zewnętrznej pętli do obu operacji - mnożenia oraz redukcji. Jest to możliwe ponieważ $m[i]$ zależne jest jedynie od $t[i]$.
+\begin{lstlisting}
+for i = 0 to s - 1
+  C := 0
+  for j = 0 to s - 1
+    (C,S) := t[j] + a[j]b[i] + C
+    t[j] := S
+  (C,S) := t[s] + C
+  t[s] := S
+  t[s + 1] := C
+  C := 0
+  m := t[0]n'[0] mod W
+  for j = 0 to s - 1
+    (C,S) := t[j] + mn[j] + C
+    t[j] := S 
+    (C,S) := t[s] + C
+    t[s] := S
+    t[s + 1] := t[s + 1] + C
+    for j = 0 to s
+      t[j] := t[j + 1]
+\end{lstlisting} 
+
+\noindent Znowu tablica $t$ musi być wyzerowana na starcie. Tutaj można już zastosować krok 3 na tablicy t by otrzymać wynik.
 
 \section{PODSUMOWANIE}
 \IEEEPARstart{A}{utorzy} są zdania, że zrealizowali cel projektu. Poprawnie zaimplementowali dwa algorytmy mnożenia Montgomerego (w tym jeden bardzo wydajny czasowo i pamięciowo) dla liczb składających się z dowolnej ilości słów dowolnej wielkości. Zrozumiawszy sztuczki matematyczne użyte w przykładowych implementacjach dokonanych przez Koca i Acara rozsądnym czasie zdołaliby zaimplementować kolejne algorytmy.  \\
