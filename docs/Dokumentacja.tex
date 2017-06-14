@@ -46,7 +46,7 @@ pdfkeywords={System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe
 
 \IEEEtitleabstractindextext{
 \begin{abstract}
-Kryptografia jest jedną z najszybciej rozwijających się i najbardziej kluczowych dziedzin informatyki. Skuteczne zaszyfrowanie danych pozwala na bezpieczne ich przechowywanie oraz wymianę choćby w systemach bankowych czy prywatnych rozmowach. Do najbezpieczniejszych systemów kryptograficznych należą kryptosystemy asymetryczne, wśród których bardzo popularne są algorytmy RSA i Diffiego-Hellmana. Oba oparte są na operacjach modularnej na wielkich liczbach, która jest niezwykle kosztowna. Ten artykuł pokazuje drogę, jaką przeszli autorzy, by zbliżyć się do zrozumienia  działania mnożenia~Montgomerego - algorytmu, który znacznie zmniejsza koszt obliczeń w arytmetyce modulo. 
+Kryptografia jest jedną z najszybciej rozwijających się i najbardziej kluczowych dziedzin informatyki. Skuteczne zaszyfrowanie danych pozwala na bezpieczne ich przechowywanie oraz wymianę choćby w systemach bankowych czy prywatnych rozmowach. Do najbezpieczniejszych systemów kryptograficznych należą kryptosystemy asymetryczne, wśród których bardzo popularne są algorytmy RSA i Diffiego-Hellmana. Oba oparte są na operacjach arytmetyki modularnej na wielkich liczbach, które są niezwykle kosztowne. Ten artykuł pokazuje drogę, jaką przeszli autorzy, by zbliżyć się do zrozumienia  działania mnożenia~Montgomerego - algorytmu, który znacznie zmniejsza koszt obliczeń w arytmetyce modulo. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -72,13 +72,13 @@ Algorytm Montgomerego działa dla dowolnie wielkich liczb naturalnych. Operuje o
   &MonPro(a,b) = abr^{-1}\ mod\ n
 \end{align*}
 \noindent
-Zdaniem autorów przed objaśnieniem wprowadzonych symbolów warto wyjaśnić, że $r^{-1}$ nie oznacza odwrotności liczby w sensie wymiernym a raczej liczbę, która po przemnożeniu przez $r$ da resztę równą $1$ po podzieleniu przez $n$. Jest to odwrotność multiplikatywna. W ścisłym zapisie matematycznym:
+Zdaniem autorów przed objaśnieniem wprowadzonych symbolów warto wyjaśnić, że $r^{-1}$ nie oznacza odwrotności liczby w sensie wymiernym a raczej liczbę, która po przemnożeniu przez $r$ i po podzieleniu przez $n$ da resztę równą $1$. Jest to odwrotność multiplikatywna. W ścisłym zapisie matematycznym:
 
 \begin{align*}
   &rr^{-1}=1\ (mod\ n)
 \end{align*}
 \noindent
-Wprowadzona liczba $n$ oznacza podstawę systemu resztowego a $r$ arbitralnie jest dobranym dodatkowym parametrem. Ważne, żeby $a$, $b$, $r$ i $n$ spełniały poniższe dodatkowe założenia:  
+Wprowadzona liczba $n$ oznacza podstawę systemu resztowego a $r$ jest arbitralnie dobranym dodatkowym parametrem. Ważne, żeby $a$, $b$, $r$ i $n$ spełniały poniższe dodatkowe założenia:  
 
 \begin{align*}
    &a, b < n  \\
@@ -101,7 +101,7 @@ Spełnienie pierwszego równania zapewni szybkość wykonania operacji z użycie
   &u \geq n\ ?\ r = u-n\ :\ r = u
 \end{align*}
 \noindent
-Jasnym jest, że obliczenie $t$ w kroku pierwszym przyspieszy późniejsze obliczenia. Krok drugi natomiast praktycznie oblicza produkt z $r^{-1}$ w $(mod\ n)$. Ostatni krok tak naprawdę wykonuje działanie oblicza już ostatnią resztę z dzielenia przez $n$ poprzez odjęcia $n$ od ewentualnie za dużego wyniku. Nowym wprowadzonym do działań symbolem jest $n'$. Jest to liczba spełniająca równanie:
+Jasnym jest, że obliczenie $t$ w kroku pierwszym przyspieszy późniejsze obliczenia, gdzie $t$ użyte jest dwukrotnie. Krok drugi natomiast praktycznie oblicza produkt z $r^{-1}$ w $(mod\ n)$. Ostatni krok tak naprawdę wykonuje działanie oblicza już ostatnią resztę z dzielenia przez $n$ poprzez odjęcia $n$ od ewentualnie za dużego wyniku. Nowym wprowadzonym do działań symbolem jest $n'$. Jest to liczba spełniająca równanie:
 
 \begin{align*}
   &rr^{-1}-nn'=1\ (mod\ n)
