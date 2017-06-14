@@ -17,11 +17,10 @@
 \newcommand\MYhyperrefoptions{bookmarks=true,bookmarksnumbered=true,
 pdfpagemode={UseOutlines},plainpages=false,pdfpagelabels=true,
 colorlinks=true,linkcolor={black},citecolor={black},urlcolor={black},
-pdftitle={Bare Demo of IEEEtran.cls for Computer Society Journals},%<!CHANGE!
-pdfsubject={Typesetting},%<!CHANGE!
-pdfauthor={Michael D. Shell},%<!CHANGE!
-pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
-             template}}%<^!CHANGE!
+pdftitle={Rozszerzenie Programowe RNS Procesora x86 Mnożenie Montgomerego},%<!CHANGE!
+pdfsubject={Rozszerzenie Programowe RNS Procesora x86 Mnożenie Montgomerego},%<!CHANGE!
+pdfauthor={J. Jurec F. Toruń},%<!CHANGE!
+pdfkeywords={System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka Komputerowa, Organizacja i Architektura Komputerów, Piotr Patronik Projekt, Mnożenie Montgomerego, Kryptografia, Optymalizacja }}%<^!CHANGE!
 
 \hyphenation{op-tical net-works semi-conduc-tor}
 
@@ -36,7 +35,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
         Filip~Toruń,~\IEEEmembership{Student,~PWR}}
 
 \markboth{sprawozdanie z projektu z organizacji i architektury komputerów, Czerwiec~2017}%
-{Shell \MakeLowercase{\textit{et al.}}: sprawozdanie z projektu z organizacji i architektury komputerow, Czerwiec~2017}
+{Shell \MakeLowercase{\textit{et al.}}: sprawozdanie z projektu z organizacji i architektury komputerów, Czerwiec~2017}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
 
@@ -51,7 +50,7 @@ Kryptografia jest jedną z najszybciej rozwijających się i najbardziej kluczow
 \end{abstract}
 
 \begin{IEEEkeywords}
-System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka Komputerowa, Orgainizacja i Architektura Komputerów, Piotr Patronik Projekt, Mnożenie Montgomerego, Kryptografia, Optymalizacja 
+System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka Komputerowa, Organizacja i Architektura Komputerów, Piotr Patronik Projekt, Mnożenie Montgomerego, Kryptografia, Optymalizacja 
 \end{IEEEkeywords}}
 
 
@@ -63,7 +62,7 @@ System Resztowy, Chińskie Twierdzenie o Resztach, Systemy Liczbowe, Arytmetyka 
 
 
 \IEEEraisesectionheading{\section{WSTĘP}\label{sec:wstęp}}
-\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskeigo twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego zastosowania.
+\IEEEPARstart{A}{by} zrozumieć działanie mnożenia Montgomerego należy najpierw poznać własności systemu resztowego i zrozumieć, jak przebiegają w nim operacje. W tym celu autorzy zaimplementowali konwersję w przód i w tył, używając chińskiego twierdzenia o resztach. Później napisali również dodawanie, odejmowanie, mnożenie oraz dzielenie przez potęgę liczby 2 w systemie resztowym dla liczby 32-bitowej w systemie modułów 7, 15, 31, 127, 8192. Rezultat tych zmagań, które zajęły większą część czasu projektu udostępniają autorzy w Dodatku A. Po zapoznaniu się z arytmetyką modularną autorzy przystąpili do implementacji algorytmu mnożenia Montgomerego w samodeskryptywnym języku skryptowym Python. Wynikowy kod udostępniają w Dodatku B. Własności mnożenia w systemie resztowym zauważone przez Piotra Montgomerego pozwalają na drastyczne przyspieszenie multiplikacji a tym samym podnoszenia do potęgi w tymże systemie. Dodatkowo, odpowiednio dobierając parametry systemu modulo, można jeszcze bardziej usprawnić obliczenia wykorzystując natychmiastowość dzielenia oraz uzyskiwania reszty z dzielenia przez potęgi liczby 2 w komputerach ogólnego zastosowania.
 
 \section{MNOŻENIE MONTGOMEREGO}
 \IEEEPARstart{W}{arty} ponownego podkreślenia jest fakt, że produktem mnożenia Montgomerego jest liczba w systemie modulo n. Wszystkie operacje przedstawione w tym rozdziale odbywają się właśnie w takim systemie. Należy porzucić intuicje wyniesione z arytmetyki liczb wymiernych.\\
@@ -102,7 +101,7 @@ Spełnienie pierwszego równania zapewni szybkość wykonania operacji z użycie
   &u \geq n\ ?\ r = u-n\ :\ r = u
 \end{align*}
 \noindent
-Jasnym jest, że obliczenie $t$ w kroku pierwszym przyspieszy późniejsze obliczenia. Krok drugi natomiast praktycznie oblicza prudukt z $r^{-1}$ w $(mod\ n)$. Ostatni krok tak naprawdę wykonuje działanie oblicza już ostatnią resztę z dzielenia przez $n$ poprzez odjęcia $n$ od ewentualnie za dużego wyniku. Nowym wprowadzonym do działań symbolem jest $n'$. Jest to liczba spełniająca równanie:
+Jasnym jest, że obliczenie $t$ w kroku pierwszym przyspieszy późniejsze obliczenia. Krok drugi natomiast praktycznie oblicza produkt z $r^{-1}$ w $(mod\ n)$. Ostatni krok tak naprawdę wykonuje działanie oblicza już ostatnią resztę z dzielenia przez $n$ poprzez odjęcia $n$ od ewentualnie za dużego wyniku. Nowym wprowadzonym do działań symbolem jest $n'$. Jest to liczba spełniająca równanie:
 
 \begin{align*}
   &rr^{-1}-nn'=1\ (mod\ n)
@@ -116,7 +115,7 @@ a więc:
 
 \noindent
 Oznacza to tyle, że $n'$ jest odwrotnością multiplikatywną liczby $r-n$ w $(mod\ n)$. \\ \newline
-Przedstawione implementacje mnożenia Montgomerego korzystają z powyższych kroków. Metoda Oddzielnego Skanowania Operandów (en. SOS - Separated Operand Scanning) wszystkie kroki wykonuje kaskadowo, po sobie. Jednak metoda Zgrubnie Zintegrowanego Skanowania Operadnów (en. CIOS - Coarsely Integrated Operand Scanning) łączy pierwsze dwa kroki, dzięki czemu zajmuje mniej miejsca w pamięci oraz wymaga wykonania mniejszej ilości instrukcji. W żadnej implementacji nie jest użyte $r^{-1}$. Jest ono jednak potrzebne do sprawdzenia poprawności wyniku na przykład w programie \texttt{gp}.
+Przedstawione implementacje mnożenia Montgomerego korzystają z powyższych kroków. Metoda Oddzielnego Skanowania Operandów (en. SOS - Separated Operand Scanning) wszystkie kroki wykonuje kaskadowo, po sobie. Jednak metoda Zgrubnie Zintegrowanego Skanowania Operandów (en. CIOS - Coarsely Integrated Operand Scanning) łączy pierwsze dwa kroki, dzięki czemu zajmuje mniej miejsca w pamięci oraz wymaga wykonania mniejszej ilości instrukcji. W żadnej implementacji nie jest użyte $r^{-1}$. Jest ono jednak potrzebne do sprawdzenia poprawności wyniku na przykład w programie \texttt{gp}.
 
 \section{IMPLEMENTACJA}
 \subsection{Metoda Separated Operand Scanning}\label{sec:metoda1}
@@ -187,7 +186,7 @@ for i = 0 to s - 1
 \section{PODSUMOWANIE}
 \IEEEPARstart{A}{utorzy} są zdania, że zrealizowali cel projektu. Poprawnie zaimplementowali dwa algorytmy mnożenia Montgomerego (w tym jeden bardzo wydajny czasowo i pamięciowo) dla liczb składających się z dowolnej ilości słów dowolnej wielkości. Zrozumiawszy sztuczki matematyczne użyte w przykładowych implementacjach dokonanych przez Koca i Acara rozsądnym czasie zdołaliby zaimplementować kolejne algorytmy.  \\
 Dobrym pomysłem było podzielenie projektu na dwie części. Łagodne wprowadzenie do systemów resztowych zrealizowane poprzez implementację prostych algorytmów dało autorom podstawowe obycie i intuicję podczas analizowania algorytmów przedstawionych przez ww. badaczy. \\
-Jest pocieszającym fakt, że dzięki pokazanym algorytmom można znacznie przyspieszyć mnożenie a przez to podnoszenie do potęgi w systemach modulo nawet na niededykowanym do tego sprzęcie elektronicznym - na przykład komputerach osobistych. Dzięki naukowcom takim jak Piotr Montgomery kryptografia i bezpieczeństwo danych nie są domeną wybranych, których stać na specjalistyczny hardware a stają się dostępne dla wszystkich. Bez wątpienia w konewkwecji zwiększa to spokój wewnętrzny i komfort ogółu zinformatyzowanego świata.
+Jest pocieszającym fakt, że dzięki pokazanym algorytmom można znacznie przyspieszyć mnożenie a przez to podnoszenie do potęgi w systemach modulo nawet na niededykowanym do tego sprzęcie elektronicznym - na przykład komputerach osobistych. Dzięki naukowcom takim jak Piotr Montgomery kryptografia i bezpieczeństwo danych nie są domeną wybranych, których stać na specjalistyczny hardware a stają się dostępne dla wszystkich. Bez wątpienia w konsekwencji zwiększa to spokój wewnętrzny i komfort ogółu zinformatyzowanego świata.
 
 \appendices
 \section{Podstawowe operacje RNS w ASM~AT\&T}
@@ -197,7 +196,7 @@ EXIT_SUCCESS=0
 SYSEXIT=60
 
 value_rns:
-# 123456  100 0110 01110 0001100 0001001000000 0x8ce18240
+# 123456  100 0110 01110 0001100 0001001000000
     .quad 0x8ce18240
 value_pos:
     .quad 123456
@@ -234,7 +233,8 @@ y3: .quad 7
 y4: .quad 54
 y5: .quad 2937
 
-#  Convert positional system number to RNS number
+#  Convert positional system number 
+#  to RNS number
 #  RAX(rns) = ARG(pos)
 .macro rns pos_num
   push %rbx
@@ -287,7 +287,8 @@ y5: .quad 2937
   pop %rdx
 .endm
 
-#  Convert RNS number to positional system number
+#  Convert RNS number to positional 
+#  system number
 #  RAX(pos) = ARG(rns)
 .macro drns rns_num
   push %r11
@@ -374,7 +375,8 @@ y5: .quad 2937
   pop %r11
 .endm
 
-#  Add two RNS numbers. One in RAX, other as ARG.
+#  Add two RNS numbers. 
+#  One in RAX, other as ARG.
 #  RAX = RAX + ARG
 .macro addrns rns_num
   push %rbx
@@ -466,7 +468,8 @@ y5: .quad 2937
   pop %rbx
 .endm
 
-#  Multiple two RNS numbers. One in RAX, other as ARG.
+#  Multiple two RNS numbers. 
+#  One in RAX, other as ARG.
 #  RAX = RAX * ARG
 .macro mulrns rns_num
   push %rbx
@@ -654,8 +657,11 @@ exit_shr_rns:
   pop %rsi
 .endm
 
-#  Compare two RNS numbers. One in RAX, other as ARG.
-#  If RAX bigger -> RAX = 1, If RAX smaller -> RAX = -1, If equal -> RAX = 0
+#  Compare two RNS numbers. 
+#  One in RAX, other as ARG.
+#  If RAX bigger -> RAX = 1,
+#  If RAX smaller -> RAX = -1,
+#  If equal -> RAX = 0
 .macro cmprns rns_num
   push %rbx
 
@@ -747,7 +753,6 @@ def MonProSOS(a, b, s, w, n):
     r = 2 ** k
     n_p = mulinv(r-n, r)
     n0 = n_p % W
-
     aT = radix(a, W)[-s:][::-1]
     bT = radix(b, W)[-s:][::-1]
     nT = radix(n, W)[-s:][::-1]
@@ -789,7 +794,6 @@ def MonProSOS(a, b, s, w, n):
         cT = t[:s]
     else:
         cT = u[:s]
-
     c = 0
     for i, w in enumerate(cT):
         c += w*W**i
@@ -802,7 +806,6 @@ def MonProCIOS(a, b, s, w, n):
     r = 2 ** k
     n_p = mulinv(r-n, r)
     n0 = n_p % W
-
     aT = radix(a, W)[-s:][::-1]
     bT = radix(b, W)[-s:][::-1]
     nT = radix(n, W)[-s:][::-1]
@@ -853,6 +856,10 @@ def MonProCIOS(a, b, s, w, n):
         c += w * W ** i
     return c
 
+    
+
+
+    
 if __name__ == '__main__':
     a = 100
     b = 240
@@ -881,7 +888,7 @@ E-mail: jurec@protonmail.com
 \end{IEEEbiography}
 
 
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{ftorun}}]{Filip Torun}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{ftorun}}]{Filip Toruń}
 jest studentem Politechniki Wrocławskiej wydziału Elektroniki kierunku Informatyka. Jego zainteresowania to technologie mobilne, obliczenia binarne, atlasy geograficzne.\\
 E-mail: 209428@student.pwr.edu.pl
 \end{IEEEbiography}
