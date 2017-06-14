@@ -25,7 +25,7 @@ def mulinv(d, n):
     if g == 1:
         return x % n
 
-
+# Propagate carry
 def ADD(t, i, C, W):
     for j in range(i, len(t)):
         if C:
@@ -40,37 +40,14 @@ def MonProSOS(a, b, s, w, n):
     k = s * w
     W = 2 ** w
     r = 2 ** k
-    r_p = mulinv(r, n)  # r prim
     n_p = mulinv(r-n, r)
     n0 = n_p % W
 
-    print('a := ' + str(a))
-    print('b := ' + str(b))
-    print('r := ' + str(r))
-    print('n := ' + str(n))
-
-    print('n\' := ' + str(n_p))
-    print('r\' := ' + str(r_p))
-
-    a_d = (a * r) % n
-    b_d = (b * r) % n
-
-    print('a^ := ' + str(a_d))
-    print('b^ := ' + str(b_d))
-
     aT = radix(a, W)[-s:][::-1]
     bT = radix(b, W)[-s:][::-1]
-    print('aT = ' + str(aT))
-    print('bT = ' + str(bT))
     nT = radix(n, W)[-s:][::-1]
 
-    # n0 = mulinv(nT[0], r) % W
-
-    print('n0 := ' + str(n0))
-    print('nT = ' + str(nT))
-
     # Step 1
-
     t = [0]*(2*s)
     for i in range(s):
         C = 0
@@ -80,15 +57,7 @@ def MonProSOS(a, b, s, w, n):
             t[i + j] = S
         t[i + s] = C
 
-    # check
-    temp = 0
-    for i, w in enumerate(t):
-        temp += w*W**i
-    print('Step 1:')
-    print('t := ' + str(temp))
-
     # Step 2
-
     t = t + [0]
     C2 = 0
     for i in range(s):
@@ -98,27 +67,11 @@ def MonProSOS(a, b, s, w, n):
             double_word = t[i + j] + m * nT[j] + C
             C, S = double_word // W, double_word % W
             t[i + j] = S
-        #print(t, C, i + s)
+
         t = ADD(t, i + s, C, W)
-        # Same effect as ADD...
-        # double_word = t[i + s] + C + C2
-        # t[i + s] = double_word % W
-        # C2 = double_word // W
-        #print(t, '\n---------')
-
     u = t[s:]
-    print(u, len(u))
-    print(t, len(t))
-
-    # check
-    temp = 0
-    for i, w in enumerate(u):
-        temp += w*W**i
-    print('Step 2:')
-    print('u := ' + str(temp))
 
     # Step 3
-
     B = 0
     for i in range(s):
         double_word = u[i] - nT[i] - B
@@ -127,7 +80,7 @@ def MonProSOS(a, b, s, w, n):
     double_word = u[s] - B
     B, D = double_word // W, double_word % W
     t[s] = D
-    if not B:
+    if B:
         cT = t[:s]
     else:
         cT = u[:s]
@@ -135,10 +88,6 @@ def MonProSOS(a, b, s, w, n):
     c = 0
     for i, w in enumerate(cT):
         c += w*W**i
-
-    print('Step 3:')
-    print('result := ' + str(c))
-
     return c
 
 
@@ -146,36 +95,15 @@ def MonProCIOS(a, b, s, w, n):
     k = s * w
     W = 2 ** w
     r = 2 ** k
-    r_p = mulinv(r, n)  # r prim
     n_p = mulinv(r-n, r)
     n0 = n_p % W
 
-    print('a := ' + str(a))
-    print('b := ' + str(b))
-    print('r := ' + str(r))
-    print('n := ' + str(n))
-
-    print('n\' := ' + str(n_p))
-    print('r\' := ' + str(r_p))
-
-    a_d = (a * r) % n
-    b_d = (b * r) % n
-
-    print('a^ := ' + str(a_d))
-    print('b^ := ' + str(b_d))
-
     aT = radix(a, W)[-s:][::-1]
     bT = radix(b, W)[-s:][::-1]
-    print('aT = ' + str(aT))
-    print('bT = ' + str(bT))
     nT = radix(n, W)[-s:][::-1]
 
-    # n0 = mulinv(nT[0], r) % W
-
-    print('n0 := ' + str(n0))
-    print('nT = ' + str(nT))
-
     t = [0]*(s+2)
+    # Steps 1 and 2
     for i in range(s):
         C = 0
         for j in range(s):
@@ -198,18 +126,9 @@ def MonProCIOS(a, b, s, w, n):
         t[s + 1] = t[s + 1] + C
         for j in range(s+1):
             t[j] = t[j+1]
-
     u = t
-    # check
-    temp = 0
-    for i, w in enumerate(t):
-        temp += w * W ** i
-
-    print('tT := ' + str(t))
-    print('u := ' + str(temp))
 
     # Step 3
-
     B = 0
     for i in range(s):
         double_word = u[i] - nT[i] - B
@@ -218,18 +137,15 @@ def MonProCIOS(a, b, s, w, n):
     double_word = u[s] - B
     B, D = double_word // W, double_word % W
     t[s] = D
-    if not B:
+    if B:
         cT = t[:s]
     else:
         cT = u[:s]
 
+    # Compute value of result
     c = 0
     for i, w in enumerate(cT):
         c += w * W ** i
-
-    print('Step 3:')
-    print('result := ' + str(c))
-
     return c
 
 if __name__ == '__main__':
@@ -238,7 +154,5 @@ if __name__ == '__main__':
     s = 4
     w = 4
     n = 33533
-    print('SOS------------')
     c = MonProSOS(a, b, s, w, n)
-    print('CIOS-----------')
     c = MonProCIOS(a, b, s, w, n)
